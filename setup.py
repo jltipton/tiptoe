@@ -15,7 +15,7 @@ def read(filename):
 
 setup(
     name="tiptoe",
-    version="0.4.2",
+    version="0.4.3",
     url="https://github.com/jltipton/tiptoe",
     license='MIT',
 
