@@ -1,10 +1,6 @@
 import os
 
 
-def main():
-    pass
-
-
 def list_files(folder_path):
     list_of_files = list()
     for (dirpath, dirnames, filenames) in os.walk(folder_path):
@@ -23,6 +19,3 @@ def setup_path(folder_path):
     return folder_path
 
 
-
-if __name__ == "__main__":
-    main()
