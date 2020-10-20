@@ -30,11 +30,7 @@ def check_2factor(browser):
 
 
 def get_2factor():
-    response = requests.get(
-        "https://api.twilio.com/2010-04-01/Accounts/ACd4fa098f0a1c3e299d3abaf225207a28/Messages.json",
-        auth=("ACd4fa098f0a1c3e299d3abaf225207a28",
-              "440dc91642194bbc2962289cb28579ac"),
-    )
+    
     msgs = json.loads(response.content)
     latest_msg = msgs["messages"][0]["body"]
     otp_code = latest_msg.split(" ")[0]
