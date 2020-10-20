@@ -37,7 +37,7 @@ def Load_Local_PrivateKey(path_to_privatekey='.', pk_password=None, azure_functi
     with open(path_to_privatekey, "rb") as key:
         p_key= serialization.load_pem_private_key(
             key.read(),
-            password=os.environ['PRIVATE_KEY_PASSPHRASE'].encode(),
+            password=str.encode(pk_password),
             backend=default_backend()
         )
 
@@ -45,7 +45,7 @@ def Load_Local_PrivateKey(path_to_privatekey='.', pk_password=None, azure_functi
             encoding=serialization.Encoding.DER,
             format=serialization.PrivateFormat.PKCS8,
             encryption_algorithm=serialization.NoEncryption())
-
+        return pkb
 
 class SnowConn:
     cursor = ""
