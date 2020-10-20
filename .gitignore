@@ -126,3 +126,7 @@ dmypy.json
 
 # personal notes
 self_notes.txt
+
+# personal tests
+rsa_key.p8
+test_tiptoe.py

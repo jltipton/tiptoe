@@ -1,4 +1,5 @@
 import snowflake.connector
+import os
 from snowflake.connector import DictCursor
 from snowflake.connector.converter_null import SnowflakeNoConverterToPython
 
@@ -47,32 +48,43 @@ def Load_Local_PrivateKey(path_to_privatekey='.', pk_password=None, azure_functi
             encryption_algorithm=serialization.NoEncryption())
         return pkb
 
+
 class SnowConn:
     cursor = ""
+    login_method = ""
     user = ""
+    password = ""
     private_key = ""
     account = ""
     warehouse = ""
     database = ""
     schema = ""
 
+
     def __init__(self, config_data: dict):
         self.cursor = config_data['cursor_type']
+        self.login_method = config_data['login_method']
         self.user = config_data['user']
-        self.private_key = config_data['private_key']
+        self.private_key = config_data['private_key'] if 'private_key' in config_data else None
         self.account = config_data['account']
         self.warehouse = config_data['warehouse']
         self.database = config_data['database']
         self.schema = config_data['schema']
+        self.password = config_data['password'] if 'password' in config_data else None
+
 
     def __enter__(self):
-        print('opening ctx')
-        self.ctx = snowflake.connector.connect(
-            user=self.user,
-            private_key=self.private_key,
-            account=self.account,
-            converter_class=SnowflakeNoConverterToPython
-        )
+        params = {}
+        params = {'user': self.user,
+                  'account' : self.account,
+                  'converter_class' : SnowflakeNoConverterToPython
+                  }
+        if self.login_method == 'password':
+            params['password'] = self.password
+        if self.login_method == 'private_key':
+            params['private_key'] = self.private_key
+
+        self.ctx = snowflake.connector.connect(**params)
 
         if self.cursor == 'dict':
             self.cur = self.ctx.cursor(DictCursor)
@@ -86,6 +98,5 @@ class SnowConn:
 
 
     def __exit__(self, exc_type, exc_value, traceback):
-        print('closing ctx')
         self.cur.close()
         self.ctx.close()
