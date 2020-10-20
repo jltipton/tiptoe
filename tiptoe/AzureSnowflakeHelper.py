@@ -11,9 +11,9 @@ from azure.keyvault.secrets import SecretClient
 from azure.identity import DefaultAzureCredential
 
 
-def Get_Azure_Secret_PrivateKey(keyvaultname, pk_secretname=None, pk_password=None):
+def Get_Azure_Secret_PrivateKey(keyvault_name, pk_secretname=None, pk_password=None):
     # _keyVaultName = os.environ["KEY_VAULT_NAME"]
-    KVUri = f"https://{keyVaultName}.vault.azure.net"
+    KVUri = f"https://{keyvault_name}.vault.azure.net"
     credential = DefaultAzureCredential()
     client = SecretClient(vault_url=KVUri, credential=credential)
     pk = str.encode(client.get_secret(pk_secretname).value)
